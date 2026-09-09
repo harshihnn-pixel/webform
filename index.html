@@ -1,70 +1,404 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>CFF — webform</title>
-<meta name="description" content="Understand your values, life journey, strengths, and role in building a successful company.">
-
-<!-- PWA: installable "Add to Home Screen" support on Android/iOS/desktop -->
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#14213d">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="CFF">
-<link rel="icon" href="icons/icon-192.png" type="image/png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Loan Application Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-<a class="skip-link" href="#main">Skip to main content</a>
 
-<div id="root"></div>
+<!-- ============ LOGIN ============ -->
+<div id="screen-login" class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-head">
+      <div class="logo-mark">LP</div>
+      <h1>Loan Application Portal</h1>
+      <p>Sign in to your account</p>
+    </div>
+    <div class="auth-body">
+      <div id="login-msg"></div>
+      <div class="field">
+        <label for="login-email">Email</label>
+        <input id="login-email" type="email" placeholder="you@example.com" autocomplete="username" />
+      </div>
+      <div class="field">
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" placeholder="Enter your password" autocomplete="current-password" />
+      </div>
+      <button class="btn btn-primary" id="login-submit">Sign in</button>
+      <div class="link-row"><a id="go-forgot">Forgot password?</a></div>
+      <div class="link-row">Don't have an account? <a id="go-signup">Create one</a></div>
+    </div>
+  </div>
+</div>
 
-<div id="live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+<!-- ============ SIGN UP ============ -->
+<div id="screen-signup" class="auth-wrap hidden">
+  <div class="auth-card">
+    <div class="auth-head">
+      <div class="logo-mark">LP</div>
+      <h1>Create your account</h1>
+      <p>It only takes a minute</p>
+    </div>
+    <div class="auth-body">
+      <div id="signup-msg"></div>
+      <div class="field">
+        <label for="signup-name">Full name</label>
+        <input id="signup-name" type="text" placeholder="Your full name" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label for="signup-email">Email</label>
+        <input id="signup-email" type="email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label for="signup-phone">Phone number</label>
+        <input id="signup-phone" type="tel" placeholder="+91 90000 00000" autocomplete="tel" />
+      </div>
+      <div class="field">
+        <label for="signup-password">Password</label>
+        <input id="signup-password" type="password" placeholder="At least 6 characters" autocomplete="new-password" />
+      </div>
+      <button class="btn btn-accent" id="signup-submit">Create account</button>
+      <div class="link-row">Already have an account? <a id="go-login-from-signup">Sign in</a></div>
+    </div>
+  </div>
+</div>
 
-<noscript>
-  <div class="noscript-banner">CFF requires JavaScript to run. Please enable JavaScript in your browser.</div>
-</noscript>
+<!-- ============ FORGOT PASSWORD ============ -->
+<div id="screen-forgot" class="auth-wrap hidden">
+  <div class="auth-card">
+    <div class="auth-head">
+      <div class="logo-mark">LP</div>
+      <h1>Reset password</h1>
+      <p>Recover access to your account</p>
+    </div>
+    <div class="auth-body">
+      <div id="forgot-msg"></div>
+      <div id="forgot-step-1">
+        <div class="field">
+          <label for="forgot-email">Account email</label>
+          <input id="forgot-email" type="email" placeholder="you@example.com" />
+        </div>
+        <button class="btn btn-primary" id="forgot-find">Find account</button>
+      </div>
+      <div id="forgot-step-2" class="hidden">
+        <div class="field">
+          <label for="forgot-new-password">New password</label>
+          <input id="forgot-new-password" type="password" placeholder="At least 6 characters" />
+        </div>
+        <button class="btn btn-accent" id="forgot-reset">Set new password</button>
+      </div>
+      <div class="link-row"><a id="go-login-from-forgot">Back to sign in</a></div>
+      <p class="fine-print">Demo mode: no email is actually sent. Confirming your account email is enough to set a new password.</p>
+    </div>
+  </div>
+</div>
 
-<!-- Loaded as plain classic scripts (not type="module") so the whole site,
-     including this file, can be opened directly from disk (file://) as well
-     as served over http(s) via `npm start`. Order matters:
+<!-- ============ DASHBOARD ============ -->
+<div id="screen-dashboard" class="hidden">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo-mark small">LP</div>
+      <span>Loan Application Portal</span>
+    </div>
+    <div class="who">
+      <span>Hi, <b id="who-name"></b></span>
+      <button class="btn-logout" id="logout-btn">Log out</button>
+    </div>
+  </header>
 
-       1. config.js        — defines window.CFF_CONFIG (generated by the
-                             server at runtime so keys stay in .env)
-       2. vendor/supabase.js — Supabase browser SDK, served from our own
-                             origin, not a CDN, so CSP stays script-src 'self'
-       3. storage.js       — local persistence helpers
-       4. auth.js          — needs both CFF_CONFIG and the Supabase SDK
-       5. api.js           — backend client
-       6. app.js           — uses all of the above
-       7. ai-widget.js
--->
-<script src="js/config.js"></script>
-<script src="vendor/supabase.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/api.js"></script>
-<script src="js/app.js"></script>
-<script src="js/ai-widget.js"></script>
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="overview">Overview</button>
+    <button class="tab-btn" data-tab="apply">New Application</button>
+    <button class="tab-btn" data-tab="applications">My Applications</button>
+  </nav>
 
-<!-- Register the service worker for offline support + installability.
-     Guarded so it never throws on file:// (service workers require
-     http/https) or in browsers without support. -->
-<script>
-  if ('serviceWorker' in navigator && (location.protocol === 'http:' || location.protocol === 'https:')) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js').catch(function (err) {
-        console.warn('CFF: service worker registration failed', err);
-      });
-    });
-  }
-</script>
+  <main class="content">
+
+    <!-- OVERVIEW -->
+    <section id="tab-overview" class="tab-panel">
+      <h2>Welcome back</h2>
+      <p class="muted">Here's a quick snapshot of your loan applications.</p>
+      <div class="stats-row" id="stats-row"></div>
+      <div class="panel">
+        <div class="panel-head">
+          <h3>Recent applications</h3>
+          <button class="btn-small" id="overview-refresh">Refresh</button>
+        </div>
+        <div id="overview-recent"></div>
+      </div>
+    </section>
+
+    <!-- NEW APPLICATION -->
+    <section id="tab-apply" class="tab-panel hidden">
+      <div class="section-head">
+        <h2>New Loan Application</h2>
+        <span class="ref-tag mono" id="app-ref">REF PENDING</span>
+      </div>
+      <div id="apply-msg"></div>
+
+      <div id="apply-form">
+      <div class="step-tabs">
+        <button class="step-tab active" data-step="personal">1. Personal</button>
+        <button class="step-tab" data-step="employment">2. Employment</button>
+        <button class="step-tab" data-step="loan">3. Loan &amp; Property</button>
+        <button class="step-tab" data-step="credit">4. Credit Profile</button>
+        <button class="step-tab" data-step="documents">5. Documents</button>
+        <button class="step-tab" data-step="review">6. Review &amp; Submit</button>
+      </div>
+
+      <!-- Step 1: Personal -->
+      <div class="step-panel active" id="step-personal">
+        <div class="grid-2">
+          <div class="field"><label for="p-name">Full name *</label><input id="p-name" type="text" /></div>
+          <div class="field"><label for="p-dob">Date of birth</label><input id="p-dob" type="date" /></div>
+          <div class="field"><label for="p-gender">Gender</label>
+            <select id="p-gender"><option value="">Select</option><option>Male</option><option>Female</option><option>Other</option><option>Prefer not to say</option></select>
+          </div>
+          <div class="field"><label for="p-marital">Marital status</label>
+            <select id="p-marital"><option value="">Select</option><option>Single</option><option>Married</option><option>Other</option></select>
+          </div>
+          <div class="field"><label for="p-phone">Phone number *</label><input id="p-phone" type="tel" /></div>
+          <div class="field"><label for="p-altphone">Alternate phone</label><input id="p-altphone" type="tel" /></div>
+          <div class="field"><label for="p-email">Email</label><input id="p-email" type="email" /></div>
+          <div class="field"><label for="p-idnumber">Government ID number (Aadhaar / PAN / etc.)</label><input id="p-idnumber" type="text" /></div>
+        </div>
+        <div class="field"><label for="p-address">Current address</label><textarea id="p-address" rows="2"></textarea></div>
+        <div class="grid-3">
+          <div class="field"><label for="p-city">City</label><input id="p-city" type="text" /></div>
+          <div class="field"><label for="p-state">State</label><input id="p-state" type="text" /></div>
+          <div class="field"><label for="p-pincode">PIN code</label><input id="p-pincode" type="text" /></div>
+        </div>
+        <div class="field checkbox-field">
+          <label><input type="checkbox" id="p-same-address" /> Permanent address is the same as current address</label>
+        </div>
+        <div class="field" id="permanent-address-field"><label for="p-permanent-address">Permanent address</label><textarea id="p-permanent-address" rows="2"></textarea></div>
+        <div class="step-nav"><span></span><button class="btn-small next-step" data-next="employment">Next: Employment →</button></div>
+      </div>
+
+      <!-- Step 2: Employment -->
+      <div class="step-panel" id="step-employment">
+        <div class="grid-2">
+          <div class="field"><label for="e-type">Employment type</label>
+            <select id="e-type">
+              <option value="">Select</option>
+              <option>Salaried</option>
+              <option>Self-employed / Business</option>
+              <option>Professional (Doctor, CA, etc.)</option>
+              <option>NRI</option>
+              <option>Not currently employed</option>
+            </select>
+          </div>
+          <div class="field"><label for="e-org">Company / business name</label><input id="e-org" type="text" /></div>
+          <div class="field"><label for="e-designation">Designation / role</label><input id="e-designation" type="text" /></div>
+          <div class="field"><label for="e-experience">Years of work experience</label><input id="e-experience" type="number" min="0" /></div>
+          <div class="field"><label for="e-income">Monthly income (₹)</label><input id="e-income" type="number" min="0" /></div>
+          <div class="field"><label for="e-other-income">Other monthly income, if any (₹)</label><input id="e-other-income" type="number" min="0" /></div>
+        </div>
+        <div class="field"><label for="e-existing-emis">Existing loans / EMIs (describe, if any)</label><textarea id="e-existing-emis" rows="2" placeholder="e.g. Car loan — ₹12,000/month, 2 years remaining"></textarea></div>
+        <div class="step-nav"><button class="btn-small prev-step" data-prev="personal">← Back</button><button class="btn-small next-step" data-next="loan">Next: Loan &amp; Property →</button></div>
+      </div>
+
+      <!-- Step 3: Loan & Property -->
+      <div class="step-panel" id="step-loan">
+        <div class="grid-2">
+          <div class="field"><label for="l-type">Loan type *</label>
+            <select id="l-type">
+              <option value="">Select</option>
+              <option>Home Loan</option>
+              <option>Plot Loan</option>
+              <option>Construction Loan</option>
+              <option>Loan Against Property</option>
+              <option>Personal Loan</option>
+              <option>Vehicle Loan</option>
+              <option>Business Loan</option>
+              <option>Education Loan</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="field"><label for="l-amount">Loan amount required (₹)</label><input id="l-amount" type="number" min="0" /></div>
+          <div class="field"><label for="l-tenure">Preferred tenure (years)</label><input id="l-tenure" type="number" min="0" /></div>
+          <div class="field"><label for="l-purpose">Purpose of loan</label><input id="l-purpose" type="text" placeholder="e.g. Purchase of 2BHK apartment" /></div>
+        </div>
+        <h4 class="subhead">Property details (if applicable)</h4>
+        <div class="grid-2">
+          <div class="field"><label for="l-prop-type">Property type</label>
+            <select id="l-prop-type"><option value="">Not applicable</option><option>Apartment / Flat</option><option>Independent house / Villa</option><option>Plot / Land</option><option>Commercial</option></select>
+          </div>
+          <div class="field"><label for="l-prop-location">Property location</label><input id="l-prop-location" type="text" /></div>
+          <div class="field"><label for="l-prop-value">Estimated property value (₹)</label><input id="l-prop-value" type="number" min="0" /></div>
+          <div class="field"><label for="l-bank">Preferred / existing bank</label><input id="l-bank" type="text" /></div>
+        </div>
+        <h4 class="subhead">Co-applicant (optional)</h4>
+        <div class="grid-2">
+          <div class="field"><label for="l-coapp-name">Co-applicant name</label><input id="l-coapp-name" type="text" /></div>
+          <div class="field"><label for="l-coapp-relation">Relationship</label><input id="l-coapp-relation" type="text" placeholder="e.g. Spouse, Parent" /></div>
+          <div class="field"><label for="l-coapp-income">Co-applicant monthly income (₹)</label><input id="l-coapp-income" type="number" min="0" /></div>
+        </div>
+        <div class="step-nav"><button class="btn-small prev-step" data-prev="employment">← Back</button><button class="btn-small next-step" data-next="credit">Next: Credit Profile →</button></div>
+      </div>
+
+      <!-- Step 4: Credit Profile -->
+      <div class="step-panel" id="step-credit">
+        <p class="muted">Lenders decide on these details more than any others. Answer what you know — leave the rest blank and we'll flag it as needing confirmation rather than guessing.</p>
+        <div class="grid-2">
+          <div class="field"><label for="c-cibil">CIBIL score</label><input id="c-cibil" type="number" min="300" max="900" placeholder="e.g. 720" /></div>
+          <div class="field"><label for="c-company-type">Company type</label>
+            <select id="c-company-type">
+              <option value="">Select</option>
+              <option value="listed">Listed company</option>
+              <option value="unlisted">Unlisted / private limited</option>
+              <option value="government">Government / PSU</option>
+              <option value="manpower">Manpower or staffing agency</option>
+            </select>
+          </div>
+          <div class="field"><label for="c-employment-status">Employment status</label>
+            <select id="c-employment-status">
+              <option value="">Select</option>
+              <option value="salaried">Permanent / on company payroll</option>
+              <option value="contract">Contract</option>
+              <option value="third_party">Third-party payroll</option>
+              <option value="self_employed">Self-employed</option>
+            </select>
+          </div>
+          <div class="field"><label for="c-industry">Industry</label>
+            <select id="c-industry">
+              <option value="">Select</option>
+              <option value="it">IT / Software</option>
+              <option value="bpo">BPO / Call centre</option>
+              <option value="banking">Banking</option>
+              <option value="nbfc">NBFC / Financial services</option>
+              <option value="insurance">Insurance</option>
+              <option value="pharma">Pharma</option>
+              <option value="real estate">Real estate</option>
+              <option value="manufacturing">Manufacturing</option>
+              <option value="healthcare">Healthcare</option>
+              <option value="education">Education</option>
+              <option value="government">Government</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="field"><label for="c-existing-emi">Total EMIs you pay now (₹ per month)</label><input id="c-existing-emi" type="number" min="0" placeholder="0 if none" /></div>
+          <div class="field"><label for="c-accommodation">Where you live</label>
+            <select id="c-accommodation">
+              <option value="">Select</option>
+              <option value="own">Own house</option>
+              <option value="family">Family home</option>
+              <option value="rented">Rented, with family</option>
+              <option value="bachelor">Bachelor accommodation</option>
+              <option value="pg">PG / hostel</option>
+            </select>
+          </div>
+        </div>
+
+        <h4 class="subhead">Credit history</h4>
+        <div class="grid-3">
+          <div class="field"><label for="c-enquiries">Loan enquiries in last 3 months</label><input id="c-enquiries" type="number" min="0" placeholder="e.g. 2" /></div>
+          <div class="field"><label for="c-bounces">EMI bounces in last 12 months</label><input id="c-bounces" type="number" min="0" placeholder="e.g. 0" /></div>
+          <div class="field"><label for="c-settled">Any settled or written-off loans?</label>
+            <select id="c-settled">
+              <option value="">Select</option>
+              <option value="none">No</option>
+              <option value="cleared">Yes, since cleared</option>
+              <option value="open">Yes, still showing</option>
+            </select>
+          </div>
+        </div>
+        <div class="doc-checklist">
+          <span>Don't know your CIBIL score? Get it free at cibil.com — most lenders here need 700 or above, and the number changes which banks we can approach.</span>
+        </div>
+        <div class="step-nav"><button class="btn-small prev-step" data-prev="loan">← Back</button><button class="btn-small next-step" data-next="documents">Next: Documents →</button></div>
+      </div>
+
+      <!-- Step 4: Documents -->
+      <div class="step-panel" id="step-documents">
+        <p class="muted">Attach the documents you have ready. You can also come back and add more later.</p>
+        <div class="doc-checklist">
+          <span>Typically needed: ID proof · Address proof · Income proof (salary slips / ITR) · Bank statements (last 6 months) · Property documents (if applicable)</span>
+        </div>
+        <div class="doc-drop">
+          <label for="doc-input">Click to attach files</label> or drag and drop here
+          <input id="doc-input" type="file" multiple accept=".pdf,.jpg,.jpeg,.png" />
+          <div class="fine-print">PDF, JPG or PNG — under 3MB each</div>
+        </div>
+        <ul class="doc-list" id="doc-list"></ul>
+        <div class="step-nav"><button class="btn-small prev-step" data-prev="credit">← Back</button><button class="btn-small next-step" data-next="review">Next: Review →</button></div>
+      </div>
+
+      <!-- Step 5: Review -->
+      <div class="step-panel" id="step-review">
+        <p class="muted">Please review your details before submitting.</p>
+        <div id="review-summary" class="review-summary"></div>
+        <div class="field checkbox-field">
+          <label><input type="checkbox" id="r-consent" /> I confirm the details above are accurate to the best of my knowledge, and I consent to this information being used to process my loan application.</label>
+        </div>
+        <div class="step-nav">
+          <button class="btn-small prev-step" data-prev="documents">← Back</button>
+          <button class="btn btn-accent" id="submit-application" style="width:auto;">Submit application</button>
+        </div>
+      </div>
+      </div><!-- /#apply-form -->
+
+      <!-- Shown in place of the form once an application is submitted -->
+      <div id="post-submit" class="hidden">
+        <div class="submitted-card">
+          <div class="submitted-ref mono" id="submitted-ref">REF</div>
+          <h3>Application received</h3>
+          <p class="muted" id="submitted-note">We're checking your details against every lender policy on file.</p>
+        </div>
+
+        <div id="match-status" class="match-status"></div>
+        <div id="match-results"></div>
+
+        <div class="step-nav" style="justify-content:flex-end;">
+          <button class="btn-small" id="start-new-application">Start another application</button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- MY APPLICATIONS -->
+    <section id="tab-applications" class="tab-panel hidden">
+      <div class="section-head">
+        <h2>My Applications</h2>
+        <button class="btn-small" id="applications-refresh">Refresh</button>
+      </div>
+      <div class="toolbar">
+        <input id="applications-search" type="text" placeholder="Search by loan type or reference number..." />
+      </div>
+      <div id="applications-container"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ AI ASSISTANT (optional) ============ -->
+<button class="assistant-fab hidden" id="assistant-fab">💬 Assistant</button>
+<div class="assistant-drawer" id="assistant-drawer">
+  <div class="assistant-head">
+    <div>
+      <h3>Application Assistant</h3>
+      <span>Ask about the loan process</span>
+    </div>
+    <button id="assistant-close">✕</button>
+  </div>
+  <p class="assistant-hint">Ask what documents you need, how a step works, or for help wording something.</p>
+  <div class="assistant-body" id="assistant-body"></div>
+  <div class="assistant-foot">
+    <input id="assistant-input" type="text" placeholder="Type a question..." />
+    <button id="assistant-send">Send</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js?v=3"></script>
+<script src="js/supabaseClient.js?v=3"></script>
+<script src="js/auth.js?v=3"></script>
+<script src="js/dashboard.js?v=3"></script>
+<script src="js/assistant.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>
