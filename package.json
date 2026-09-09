@@ -1,0 +1,25 @@
+{
+  "name": "cff-site",
+  "version": "1.0.0",
+  "description": "CFF \u2014 Company Formation Framework. A values, life-journey, and success assessment app with a secure Express backend for AI analysis.",
+  "main": "server/server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node --watch server/server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.0",
+    "helmet": "^7.1.0",
+    "zod": "^3.23.8",
+    "@supabase/supabase-js": "^2.55.0"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
